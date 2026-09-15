@@ -63,5 +63,12 @@ spec:
   promotionTemplate:
     spec:
       steps:
-      - task:
-          name: promote
+        - uses: wait-for-approval
+          as: approve
+          config:
+            minApprovals: 1
+            approvers:
+              - claim: groups
+                value: kargo-approve-admin
+        - task:
+            name: promote

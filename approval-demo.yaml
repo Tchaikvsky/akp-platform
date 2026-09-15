@@ -1,0 +1,84 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Project
+metadata:
+  name: approval-demo
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: demo-warehouse
+  namespace: approval-demo
+spec:
+  subscriptions:
+    - image:
+        repoURL: public.ecr.aws/nginx/nginx
+        semverConstraint: ">=1.25.0"
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: dev
+  namespace: approval-demo
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: demo-warehouse
+      sources:
+        direct: true
+  promotionTemplate:
+    spec:
+      steps:
+        - uses: argocd-update
+          config:
+            apps:
+              - name: demo-app-dev
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: test
+  namespace: approval-demo
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: demo-warehouse
+      sources:
+        stages:
+          - dev
+  promotionTemplate:
+    spec:
+      steps:
+        - uses: argocd-update
+          config:
+            apps:
+              - name: demo-app-test
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: prod
+  namespace: approval-demo
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: demo-warehouse
+      sources:
+        stages:
+          - test
+  promotionTemplate:
+    spec:
+      steps:
+        - uses: wait-for-approval
+          as: approve
+          config:
+            minApprovals: 1
+            approvers:
+              - claim: groups
+                value: kargo-approve-admin
+        - uses: argocd-update
+          config:
+            apps:
+              - name: demo-app-prod

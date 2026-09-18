@@ -64,15 +64,10 @@ spec:
   promotionTemplate:
     spec:
       steps:
-        - uses: wait-for-approval
-          as: approve
-          if: ${{ freightStatus(ctx.targetFreight.name).approvedFor?.[ctx.stage]?.approvedAt != nil }}
-          config:
-            minApprovals: 2
-            approvers:
-              - claim: groups
-                value: kargo-approve-admin
-                required: true
-              - role: admin
-        - task:
-            name: promote
+      - task:
+          name: manual-approval-gate
+          vars:
+          - name: approverGroup
+            value: kargo-approve-admin
+      - task:
+          name: promote

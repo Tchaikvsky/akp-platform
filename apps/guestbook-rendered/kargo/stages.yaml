@@ -66,8 +66,5 @@ spec:
       steps:
       - task:
           name: manual-approval-gate
-          vars:
-          - name: approverGroup
-            value: kargo-approve-admin
       - task:
           name: promote

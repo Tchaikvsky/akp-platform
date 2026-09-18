@@ -8,6 +8,7 @@ spec:
   - name: minApprovals
     value: "2"
   - name: approverGroup
+    value: kargo-approve-admin
   - name: approverRole
     value: admin
   steps:

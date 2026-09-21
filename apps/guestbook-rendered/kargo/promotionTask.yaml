@@ -14,7 +14,7 @@ spec:
   steps:
   - uses: wait-for-approval
     as: approve
-    if: ${{ freightStatus(ctx.targetFreight.name).approvedFor?.[ctx.stage]?.approvedAt != nil }}
+    if: ${{ ctx.stage contains "prod" && freightStatus(ctx.targetFreight.name).approvedFor?.[ctx.stage]?.approvedAt != nil }}
     config:
       minApprovals: ${{ vars.minApprovals }}
       approvers:

@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
 - ../../base
 
-namespace: guestbook-rendered-prod
+namespace: guestbook-rendered-prod-us-east

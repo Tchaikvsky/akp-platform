@@ -1,0 +1,15 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: ProjectConfig
+metadata:
+  name: guestbook-rendered
+  namespace: guestbook-rendered
+spec:
+  promotionWindows:
+  - name: friday-afternoon-prod-freeze
+    kind: Deny
+    description: "No prod promotions Friday afternoon through end of day"
+    stageSelector:
+      name: glob:prod-*
+    rrule: FREQ=WEEKLY;BYDAY=FR
+    dtstart: "TZID=America/Chicago:20260102T120000"
+    dtend: "TZID=America/Chicago:20260103T000000"

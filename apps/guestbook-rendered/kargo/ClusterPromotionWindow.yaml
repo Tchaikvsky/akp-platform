@@ -1,0 +1,12 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: ClusterConfig
+metadata:
+  name: cluster
+spec:
+  promotionWindows:
+  - name: weekend-freeze
+    kind: Deny
+    description: "No promotions on Saturday or Sunday"
+    rrule: FREQ=WEEKLY;BYDAY=SA
+    dtstart: "TZID=America/Chicago:20260103T000000"
+    dtend: "TZID=America/Chicago:20260105T000000"

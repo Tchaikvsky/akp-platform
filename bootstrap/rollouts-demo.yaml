@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rollouts-demo
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/argoproj/argo-rollouts.git
+    path: docs/getting-started/basic
+    targetRevision: HEAD
+  destination:
+    name: argo-test-cluster
+    namespace: rollouts-demo
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true

@@ -10,7 +10,7 @@ spec:
     chart: argo-rollouts
     targetRevision: 2.*        # pin to a specific version you've tested
   destination:
-    name:  k3d-argo-test-cluster
+    name: argo-test-cluster
     namespace: argo-rollouts
   syncPolicy:
     automated: {}

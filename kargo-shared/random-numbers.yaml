@@ -1,7 +1,7 @@
 apiVersion: ee.kargo.akuity.io/v1alpha1
 kind: CustomPromotionStep
 metadata:
-  name: random-number
+  name: random-numbers
 spec:
   command:
     - sh

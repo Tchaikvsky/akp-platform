@@ -1,26 +1,6 @@
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
-  name: dev
-  namespace: guestbook-rendered
-  annotations:
-    kargo.akuity.io/color: green
-spec:
-  requestedFreight:
-  - origin:
-      kind: Warehouse
-      name: guestbook
-    sources:
-      direct: true
-  promotionTemplate:
-    spec:
-      steps:
-      - task:
-          name: promote
----
-apiVersion: kargo.akuity.io/v1alpha1
-kind: Stage
-metadata:
   name: staging
   namespace: guestbook-rendered
   annotations:
@@ -31,8 +11,7 @@ spec:
       kind: Warehouse
       name: guestbook
     sources:
-      stages:
-      - dev
+      direct: true
   promotionTemplate:
     spec:
       steps:

@@ -1,0 +1,24 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: manual-approval-gate
+  namespace: guestbook-rendered-sequential
+spec:
+  vars:
+  - name: minApprovals
+    value: "2"
+  - name: approverGroup
+    value: kargo-approve-admin
+  - name: approverRole
+    value: admin
+  steps:
+  - uses: wait-for-approval
+    as: approve
+    if: ${{ ctx.stage contains "prod" && freightStatus(ctx.targetFreight.name).approvedFor?.[ctx.stage]?.approvedAt != nil }}
+    config:
+      minApprovals: ${{ vars.minApprovals }}
+      approvers:
+      - claim: groups
+        value: ${{ vars.approverGroup }}
+        required: true
+      - role: ${{ vars.approverRole }}
